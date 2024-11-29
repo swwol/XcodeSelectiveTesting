@@ -35,7 +35,7 @@ runs:
         BASE_BRANCH: ${{ inputs.base-branch }}
       # language=bash  
       run: |
-        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}" --test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}"
+        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}" --test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}" --verbose
 
     - name: "Check if all tests disabled"
       id: check-if-all-disabled

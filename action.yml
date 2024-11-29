@@ -13,7 +13,12 @@ inputs:
 
   base-branch:
     description: 'Branch to compare against to find the relevant changes.'
-    required: true
+    required: false
+
+  changed-files:
+    description: 'list of changed files'
+    required: false 
+
 outputs:
   all-test-disabled:
     description: "If modifying the test plan resulted in all the test targets being disabled"
@@ -33,9 +38,16 @@ runs:
         BASE_PATH: ${{ inputs.base-path }}
         TEST_PLAN: ${{ inputs.test-plan }}
         BASE_BRANCH: ${{ inputs.base-branch }}
+        CHANGED_FILES: ${{ inputs.change-files }}
       # language=bash  
       run: |
-        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}" --test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}" --verbose
+        args=("${BASE_PATH}" --test-plan "${TEST_PLAN}")
+        if [ -z "${CHANGED_FILES}" ]; then
+          args+=(-c "${CHANGED_FILES}")
+        elif [ -z "${BASE_BRANCH}" ]; then
+          args+=(--base-branch "${BASE_BRANCH}")
+        fi
+        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}" --test-plan "${TEST_PLAN}" "${args[@]}" --verbose
 
     - name: "Check if all tests disabled"
       id: check-if-all-disabled

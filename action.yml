@@ -3,6 +3,10 @@ description: |
   Run only tests relevant to the changeset.
 
 inputs:
+  base-path:
+    description: 'Project, workspace or package path'
+    required: true
+
   test-plan:
     description: 'The path to the test plan'
     required: true
@@ -26,11 +30,12 @@ runs:
     - name: "Modifiy Test Plan"
       shell: bash
       env: 
+        BASE_PATH: ${{ inputs.base-path }}
         TEST_PLAN: ${{ inputs.test-plan }}
         BASE_BRANCH: ${{ inputs.base-branch }}
       # language=bash  
       run: |
-        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test --test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}"
+        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}"--test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}"
 
     - name: "Check if all tests disabled"
       id: check-if-all-disabled
@@ -41,7 +46,9 @@ runs:
       run: |
         totalTestTargets=$(jq '[.testTargets[]] | length' "${TEST_PLAN}")
         disabledTargets=$(jq '[.testTargets[] | select(.enabled == false)] | length' "${TEST_PLAN}")
-        if [[ $totalTestTargets == $disabledTargets ]]; then
+        echo "total targets: $totalTestTargets"
+        echo "disabled targets: $disabledTargets"
+        if [[ $totalTestTargets -eq 0 || $totalTestTargets -eq $disabledTargets ]]; then
           echo "all-tests-disabled=true" | tee --append "${GITHUB_OUTPUT}"
         else
           echo "all-tests-disabled=false" | tee --append "${GITHUB_OUTPUT}"

@@ -1,0 +1,48 @@
+name: Xcode Selective Testing
+description: |
+  Run only tests relevant to the changeset.
+
+inputs:
+  test-plan:
+    description: 'The path to the test plan'
+    required: true
+
+  base-branch:
+    description: 'Branch to compare against to find the relevant changes.'
+    required: true
+outputs:
+  all-test-disabled:
+    description: "If modifying the test plan resulted in all the test targets being disabled"
+    value: ${{ steps.check-if-all-disabled.outputs.all-tests-disabled }}
+
+runs:
+  using: 'composite'
+  steps: 
+    - name: "Set up Swift"
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: "5.10"
+
+    - name: "Modifiy Test Plan"
+      shell: bash
+      env: 
+        TEST_PLAN: ${{ inputs.test-plan }}
+        BASE_BRANCH: ${{ inputs.base-branch }}
+      # language=bash  
+      run: |
+        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test --test-plan "${TEST_PLAN}" --base-branch "${BASE_BRANCH}"
+
+    - name: "Check if all tests disabled"
+      id: check-if-all-disabled
+      shell: bash
+      env:
+        TEST_PLAN: ${{ inpputs.test-plan }}
+      # language=bash  
+      run: |
+        totalTestTargets=$(jq '[.testTargets[]] | length' "${TEST_PLAN}")
+        disabledTargets=$(jq '[.testTargets[] | select(.enabled == false)] | length' "${TEST_PLAN}")
+        if [[ $totalTestTargets == $disabledTargets ]]; then
+          echo "all-tests-disabled=true" | tee --append "${GITHUB_OUTPUT}"
+        else
+          echo "all-tests-disabled=false" | tee --append "${GITHUB_OUTPUT}"
+        fi

@@ -47,7 +47,7 @@ runs:
         elif [ -z "${BASE_BRANCH}" ]; then
           args+=(--base-branch "${BASE_BRANCH}")
         fi
-        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${BASE_PATH}" --test-plan "${TEST_PLAN}" "${args[@]}" --verbose
+        swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${args[@]}" --verbose
 
     - name: "Check if all tests disabled"
       id: check-if-all-disabled

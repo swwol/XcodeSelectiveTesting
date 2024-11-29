@@ -36,7 +36,7 @@ runs:
       id: check-if-all-disabled
       shell: bash
       env:
-        TEST_PLAN: ${{ inpputs.test-plan }}
+        TEST_PLAN: ${{ inputs.test-plan }}
       # language=bash  
       run: |
         totalTestTargets=$(jq '[.testTargets[]] | length' "${TEST_PLAN}")

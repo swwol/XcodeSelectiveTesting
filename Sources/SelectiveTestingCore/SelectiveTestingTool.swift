@@ -70,6 +70,11 @@ public final class SelectiveTestingTool {
             }
         }
         else {
+          print("debugging paths")
+          print(changedFiles.joined(separator: " "))
+          print(Path(changedFiles.first!))
+          print(Path(changedFiles.first!).absolute())
+          print("end debugging")
             changeset = Set(changedFiles.map { Path($0).absolute() })
         }
 

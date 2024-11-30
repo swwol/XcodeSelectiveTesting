@@ -43,7 +43,11 @@ runs:
       run: |
         args=("${BASE_PATH}" --test-plan "${TEST_PLAN}")
         if [ -n "${CHANGED_FILES}" ]; then
-          args+=(-c "${CHANGED_FILES}")
+          args+=(--changed-files)
+          for file in ${CHANGED_FILES}; do
+            echo "adding $file"
+            args+=("$file")
+          done
         elif [ -n "${BASE_BRANCH}" ]; then
           args+=(--base-branch "${BASE_BRANCH}")
         fi

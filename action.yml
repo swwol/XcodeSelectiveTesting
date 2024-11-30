@@ -20,7 +20,7 @@ inputs:
     required: false 
 
 outputs:
-  all-test-disabled:
+  all-tests-disabled:
     description: "If modifying the test plan resulted in all the test targets being disabled"
     value: ${{ steps.check-if-all-disabled.outputs.all-tests-disabled }}
 

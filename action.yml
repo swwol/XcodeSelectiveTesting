@@ -47,6 +47,8 @@ runs:
         elif [ -z "${BASE_BRANCH}" ]; then
           args+=(--base-branch "${BASE_BRANCH}")
         fi
+        echo "arguments:"
+        echo "${args[@]}"
         swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${args[@]}" --verbose
 
     - name: "Check if all tests disabled"

@@ -42,9 +42,9 @@ runs:
       # language=bash  
       run: |
         args=("${BASE_PATH}" --test-plan "${TEST_PLAN}")
-        if [ -z "${CHANGED_FILES}" ]; then
+        if [ -n "${CHANGED_FILES}" ]; then
           args+=(-c "${CHANGED_FILES}")
-        elif [ -z "${BASE_BRANCH}" ]; then
+        elif [ -n "${BASE_BRANCH}" ]; then
           args+=(--base-branch "${BASE_BRANCH}")
         fi
         echo "arguments:"

@@ -38,7 +38,7 @@ runs:
         BASE_PATH: ${{ inputs.base-path }}
         TEST_PLAN: ${{ inputs.test-plan }}
         BASE_BRANCH: ${{ inputs.base-branch }}
-        CHANGED_FILES: ${{ inputs.change-files }}
+        CHANGED_FILES: ${{ inputs.changed-files }}
       # language=bash  
       run: |
         args=("${BASE_PATH}" --test-plan "${TEST_PLAN}")

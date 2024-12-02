@@ -22,8 +22,8 @@ public extension Git {
 
             currentBranch = "HEAD"
         }
-
-        let changes = try Shell.execOrFail("cd \(path) && git diff '\(baseBranch)'..'\(currentBranch)' --name-only")
+      Logger.message("path: \(path)")
+        let changes = try Shell.execOrFail("cd \(gitRoot) && git diff '\(baseBranch)'..'\(currentBranch)' --name-only")
       Logger.message("changes: \(changes)")
         let changesTrimmed = changes.trimmingCharacters(in: .whitespacesAndNewlines)
         Logger.message("changes trimmed: " + changesTrimmed)

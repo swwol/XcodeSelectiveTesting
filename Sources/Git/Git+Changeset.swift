@@ -24,6 +24,7 @@ public extension Git {
         }
 
         let changes = try Shell.execOrFail("cd \(path) && git diff '\(baseBranch)'..'\(currentBranch)' --name-only")
+      Logger.message("changes: \(changes)")
         let changesTrimmed = changes.trimmingCharacters(in: .whitespacesAndNewlines)
         Logger.message("changes trimmed: " + changesTrimmed)
         guard !changesTrimmed.isEmpty else {

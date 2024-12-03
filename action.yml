@@ -55,19 +55,3 @@ runs:
         echo "${args[@]}"
         swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${args[@]}" --verbose
 
-    - name: "Check if all tests disabled"
-      id: check-if-all-disabled
-      shell: bash
-      env:
-        TEST_PLAN: ${{ inputs.test-plan }}
-      # language=bash  
-      run: |
-        totalTestTargets=$(jq '[.testTargets[]] | length' "${TEST_PLAN}")
-        disabledTargets=$(jq '[.testTargets[] | select(.enabled == false)] | length' "${TEST_PLAN}")
-        echo "total targets: $totalTestTargets"
-        echo "disabled targets: $disabledTargets"
-        if [[ $totalTestTargets -eq 0 || $totalTestTargets -eq $disabledTargets ]]; then
-          echo "all-tests-disabled=true" | tee --append "${GITHUB_OUTPUT}"
-        else
-          echo "all-tests-disabled=false" | tee --append "${GITHUB_OUTPUT}"
-        fi

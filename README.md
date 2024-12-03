@@ -105,6 +105,58 @@ Alternatively, you can use CLI to achieve the same result:
 2. Collect the list of changed files
 3. Provide the list of changed files via the command line option `-c` or `--changed-files`
 
+Or use the GitHub action:
+
+### Example GitHub Action Workflow
+
+GitHub action can take a list of changed filed directly, which may be useful if you are already using another action to derive them in your workflow.
+
+```yaml
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+
+      - name: Modify Test Plan
+        id: modify-test-plan
+        uses: mikeger/XcodeSelectiveTesting@v0.11.1
+        with:
+        	base-path: ./Project.xcodeproj
+        	test-plan: ./TestPlan.xctestplan
+        	changed-files: ${{ steps.changed-files.outputs.all_changed_files }}
+
+```
+
+Or you can also provide a base branch to calculate the changeset from:
+
+```yaml
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout head and base refs
+        id: checkout-refs
+        run: |
+          git fetch --verbose --no-tags origin "${GITHUB_BASE_REF}"
+          git checkout "${GITHUB_BASE_REF}"
+          git fetch --verbose --no-tags origin "${GITHUB_HEAD_REF}"
+          git checkout "${GITHUB_HEAD_REF}"
+
+      - name: Modify Test Plan
+        id: modify-test-plan
+        uses: mikeger/XcodeSelectiveTesting@v0.11.1
+        with:
+        	base-path: ./Project.xcodeproj
+        	test-plan: ./TestPlan.xctestplan
+        	base-branch: ${{ github.base_ref }}
+
+```
+
 ## How does this work?
 
 ### 1. Detecting what is changed

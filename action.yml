@@ -16,7 +16,7 @@ inputs:
     required: false
 
   changed-files:
-    description: 'list of changed files'
+    description: 'list of changed files - if set, base-branch will be ignored.'
     required: false 
 
 outputs:

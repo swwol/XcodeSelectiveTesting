@@ -70,11 +70,6 @@ public final class SelectiveTestingTool {
             }
         }
         else {
-          Logger.message("debugging paths")
-          Logger.message(changedFiles.joined(separator: " "))
-          Logger.message(Path(changedFiles.first!).description)
-          Logger.message(Path(changedFiles.first!).absolute().description)
-          Logger.message("end debugging")
             changeset = Set(changedFiles.map { Path($0).absolute() })
         }
 

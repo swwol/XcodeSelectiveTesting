@@ -22,20 +22,13 @@ public extension Git {
 
             currentBranch = "HEAD"
         }
-      Logger.message("path: \(path)")
         let changes = try Shell.execOrFail("cd \(gitRoot) && git diff '\(baseBranch)'..'\(currentBranch)' --name-only")
-      Logger.message("changes: \(changes)")
         let changesTrimmed = changes.trimmingCharacters(in: .whitespacesAndNewlines)
-        Logger.message("changes trimmed: " + changesTrimmed)
         guard !changesTrimmed.isEmpty else {
             return Set()
         }
-
-     let set = Set(changesTrimmed.components(separatedBy: .newlines).map { gitRoot + $0 })
-      let set2 = Set(changesTrimmed.split(whereSeparator: \.isNewline).map { gitRoot + String($0) })
-      Logger.message("set contains \(set.count)")
-      Logger.message("set2 contains \(set2.count)")
-      return set
+        let set = Set(changesTrimmed.components(separatedBy: .newlines).map { gitRoot + $0 })
+        return set
     }
 
     func localChangeset() throws -> Set<Path> {

@@ -27,8 +27,7 @@ public extension Git {
         guard !changesTrimmed.isEmpty else {
             return Set()
         }
-        let set = Set(changesTrimmed.components(separatedBy: .newlines).map { gitRoot + $0 })
-        return set
+        return Set(changesTrimmed.components(separatedBy: .newlines).map { gitRoot + $0 })
     }
 
     func localChangeset() throws -> Set<Path> {

@@ -17,20 +17,11 @@ inputs:
 
   changed-files:
     description: 'list of changed files - if set, base-branch will be ignored.'
-    required: false 
-
-outputs:
-  all-tests-disabled:
-    description: "If modifying the test plan resulted in all the test targets being disabled"
-    value: ${{ steps.check-if-all-disabled.outputs.all-tests-disabled }}
+    required: false
 
 runs:
   using: 'composite'
-  steps: 
-    - name: "Set up Swift"
-      uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: "5.10"
+  steps:
 
     - name: "Modifiy Test Plan"
       shell: bash
@@ -54,4 +45,3 @@ runs:
         echo "arguments:"
         echo "${args[@]}"
         swift run --package-path "${GITHUB_ACTION_PATH}" xcode-selective-test "${args[@]}" --verbose
-

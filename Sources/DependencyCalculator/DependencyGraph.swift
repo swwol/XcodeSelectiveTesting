@@ -70,6 +70,7 @@ extension WorkspaceInfo {
                                       config: WorkspaceInfo.AdditionalConfig? = nil,
                                       exclude: [String]) throws -> WorkspaceInfo
     {
+      Logger.message("parsing")
         let includeRootPackage = !Set(["xcworkspace", "xcodeproj"]).contains(path.extension)
 
         var (packageWorkspaceInfo, packages) = try parsePackages(in: path, includeRootPackage: includeRootPackage, exclude: exclude)

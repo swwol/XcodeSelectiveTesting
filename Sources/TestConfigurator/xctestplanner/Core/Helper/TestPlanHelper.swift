@@ -16,6 +16,7 @@ public class TestPlanHelper {
         let data = try Data(contentsOf: url)
 
         let decoder = JSONDecoder()
+        print("trying to decode test plan:")
         return try decoder.decode(TestPlanModel.self, from: data)
     }
 

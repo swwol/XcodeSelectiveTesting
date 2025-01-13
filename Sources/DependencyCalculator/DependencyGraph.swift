@@ -259,6 +259,7 @@ extension WorkspaceInfo {
                              packages: inout [PackageTargetMetadata],
                              allProjects: [(XcodeProj, Path)]) throws -> WorkspaceInfo
     {
+      Logger.message("woop")
         var dependsOn: [TargetIdentity: Set<TargetIdentity>] = [:]
         var files: [TargetIdentity: Set<Path>] = [:]
         var folders: [Path: TargetIdentity] = [:]

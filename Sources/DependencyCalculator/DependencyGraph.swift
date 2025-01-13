@@ -231,6 +231,7 @@ extension WorkspaceInfo {
                 dependsOn.insert(metadata.targetIdentity(), dependOn: dependency)
             }
 
+          Logger.message("Hello")
             for affectedByPath in metadata.affectedBy {
                 guard affectedByPath.exists else {
                     Logger.warning("Path \(affectedByPath) is mentioned from package at \(metadata.path) but does not exist")
